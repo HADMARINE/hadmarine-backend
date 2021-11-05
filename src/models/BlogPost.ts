@@ -8,8 +8,9 @@ export interface BlogPostInterface {
 const BlogPostSchema: Schema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String, required: false },
-  type: { type: String, required: true },
+  tag: { type: String, required: true },
   content: { type: String, required: true },
+  date: { type: String, required: true },
 });
 
 export interface BlogPostDocument extends Document, BlogPostInterface {
@@ -18,7 +19,7 @@ export interface BlogPostDocument extends Document, BlogPostInterface {
 
 // BlogPostSchema.methods.~~
 
-BlogPostSchema.pre('save', function (next: HookNextFunction): void {
+BlogPostSchema.pre('save', function (next): void {
   const doc = this as BlogPostDocument;
   models.BlogPost.findOne(
     {
