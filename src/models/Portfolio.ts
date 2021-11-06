@@ -3,7 +3,12 @@ import error from '@error/ErrorDictionary';
 import BlogPost from './BlogPost';
 
 export interface PortfolioInterface {
-  // Add Schema here
+  title: string;
+  subtitle?: string;
+  type: string;
+  date: Date;
+  content: string;
+  link: Record<string, string>;
 }
 
 const PortfolioSchema: Schema = new Schema({
@@ -12,26 +17,28 @@ const PortfolioSchema: Schema = new Schema({
   type: { type: String, required: true },
   date: { type: Date, required: true },
   content: { type: String, required: true },
-  relatedPost: { type: Schema.Types.ObjectId, required: false, ref: BlogPost },
+  link: { type: Object, required: false },
 });
 
-export interface PortfolioDocument extends Document, PortfolioInterface {}
+export interface PortfolioDocument extends Document, PortfolioInterface {
+  // Add Methods here
+}
 
 // PortfolioSchema.methods.~~
 
-PortfolioSchema.pre('save', function (next): void {
-  const doc = this as PortfolioDocument;
-  models.Portfolio.findOne(
-    {
-      $or: [],
-    },
-    function (err: Error, site: PortfolioDocument) {
-      if (site) next(error.db.exists());
-      if (err) next(err);
-      next();
-    },
-  );
-});
+// PortfolioSchema.pre('save', function (next): void {
+//   const doc = this as PortfolioDocument;
+//   models.Portfolio.findOne(
+//     {
+//       $or: [],
+//     },
+//     function (err: Error, site: PortfolioDocument) {
+//       if (site) next(error.db.exists());
+//       if (err) next(err);
+//       next();
+//     },
+//   );
+// });
 
 const Portfolio = model<PortfolioDocument>('Portfolio', PortfolioSchema);
 
