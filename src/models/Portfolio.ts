@@ -1,6 +1,4 @@
 import { model, Schema, Document, models } from 'mongoose';
-import error from '@error/ErrorDictionary';
-import BlogPost from './BlogPost';
 
 export interface PortfolioInterface {
   title: string;
