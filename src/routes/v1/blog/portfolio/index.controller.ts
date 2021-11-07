@@ -1,5 +1,6 @@
 import Portfolio, { PortfolioInterface } from '@models/Portfolio';
 import packageSettings from '@src/../package.json';
+import { QueryBuilder } from '@util/Assets';
 import {
   Controller,
   DataTypes,
@@ -26,9 +27,12 @@ export default class PortfolioController {
     const limit = count || 10;
 
     return await Portfolio.find(
-        {
-            title: 
-        }
-    ).sort('-date').skip(skip).limit(limit);
+      QueryBuilder({
+        title: search,
+      }),
+    )
+      .sort('-date')
+      .skip(skip)
+      .limit(limit);
   }
 }
