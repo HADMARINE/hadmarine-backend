@@ -17,21 +17,24 @@ export default class AdminPortfolioController {
   @PostMapping()
   @SetMiddleware(AdminAuthority)
   async create(req: WrappedRequest): Promise<void> {
-    const { title, subtitle, type, content, link } = req.verify.body({
-      title: DataTypes.string(),
-      subtitle: DataTypes.stringNull(),
-      type: DataTypes.string(),
-      content: DataTypes.string(),
-      link: DataTypes.objectNull(),
-    });
+    const { title, subtitle, thumbnail, content, link, date } = req.verify.body(
+      {
+        title: DataTypes.string(),
+        subtitle: DataTypes.stringNull(),
+        thumbnail: DataTypes.stringNull(),
+        content: DataTypes.string(),
+        link: DataTypes.objectNull(),
+        date: DataTypes.date(),
+      },
+    );
 
     await Portfolio.create({
       title,
       subtitle,
-      type,
+      thumbnail,
       content,
       link,
-      date: Date.now(),
+      date,
     });
   }
 
@@ -39,22 +42,30 @@ export default class AdminPortfolioController {
   @SetMiddleware(AdminAuthority)
   async modify(req: WrappedRequest): Promise<null | void> {
     const { id } = req.verify.params({ id: DataTypes.string() });
-    const { title, subtitle, type, content, link } = req.verify.body({
-      title: DataTypes.stringNull(),
-      subtitle: DataTypes.stringNull(),
-      type: DataTypes.stringNull(),
-      content: DataTypes.stringNull(),
-      link: DataTypes.objectNull(),
+    const { title, subtitle, thumbnail, content, link, date } = req.verify.body(
+      {
+        title: DataTypes.stringNull(),
+        subtitle: DataTypes.stringNull(),
+        thumbnail: DataTypes.stringNull(),
+        content: DataTypes.stringNull(),
+        link: DataTypes.objectNull(),
+        date: DataTypes.date(),
+      },
+    );
+
+    const val = QueryBuilder({
+      title,
+      subtitle,
+      thumbnail,
+      content,
+      link,
+      date,
     });
 
+    console.log(val);
+
     await Portfolio.findByIdAndUpdate(id, {
-      $set: QueryBuilder({
-        title,
-        subtitle,
-        type,
-        content,
-        link,
-      }),
+      $set: val,
     });
   }
 

@@ -3,16 +3,16 @@ import { model, Schema, Document, models } from 'mongoose';
 export interface PortfolioInterface {
   title: string;
   subtitle?: string;
-  type: string;
-  date: Date;
+  thumbnail?: string;
   content: string;
   link: Record<string, string>;
+  date: Date;
 }
 
 const PortfolioSchema: Schema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String, required: false },
-  type: { type: String, required: true },
+  thumbnail: { type: String, required: false },
   date: { type: Date, required: true },
   content: { type: String, required: true },
   link: { type: Object, required: false },

@@ -134,9 +134,15 @@ export function QueryBuilder<T>(
         value !== null &&
         (allowDepth === -1 || currentDepth < allowDepth)
       ) {
-        Object.assign(result, {
-          [key]: QueryBuilder(value, allowDepth, currentDepth + 1),
-        });
+        if (value instanceof Date) {
+          Object.assign(result, {
+            [key]: value,
+          });
+        } else {
+          Object.assign(result, {
+            [key]: QueryBuilder(value, allowDepth, currentDepth + 1),
+          });
+        }
       } else if (value !== undefined) {
         if (Array.isArray(value)) {
           if ((value as any[]).length === 0) {

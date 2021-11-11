@@ -16,23 +16,35 @@ export default class PortfolioController {
   }
 
   @GetMapping()
-  async getMaster(req: WrappedRequest): Promise<PortfolioInterface[]> {
-    const { page, count, search } = req.verify.query({
-      page: DataTypes.numberNull(),
-      count: DataTypes.numberNull(),
+  async getMaster(
+    req: WrappedRequest,
+  ): Promise<{ data: PortfolioInterface[]; length: number } | null> {
+    const { skip, limit, search } = req.verify.query({
+      skip: DataTypes.numberNull(),
+      limit: DataTypes.numberNull(),
       search: DataTypes.stringNull(),
     });
 
-    const skip = page && count ? (page - 1) * count : 0;
-    const limit = count || 10;
-
-    return await Portfolio.find(
+    const portfolios = await Portfolio.find(
       QueryBuilder({
         title: search,
       }),
     )
       .sort('-date')
-      .skip(skip)
-      .limit(limit);
+      .skip(skip || 0)
+      .limit(limit || 10);
+
+    const length = await Portfolio.count(
+      QueryBuilder({
+        title: search,
+      }),
+    );
+    if (portfolios.length === 0) {
+      return null;
+    }
+    return {
+      data: portfolios,
+      length,
+    };
   }
 }
