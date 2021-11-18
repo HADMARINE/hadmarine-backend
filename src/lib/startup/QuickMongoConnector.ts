@@ -51,6 +51,7 @@ export default async function connectDB(): Promise<void> {
         dbName,
       });
       dbConnectionStatus = 'CONN_PLAIN';
+      return;
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -91,9 +92,9 @@ export default async function connectDB(): Promise<void> {
             tlsAllowInvalidHostnames: true,
             dbName,
             ssl: true,
-            sslCA: 
-              fs.readFileSync(`${process.cwd()}/${process.env.DB_SSL_KEY}`).toString(),
-            
+            sslCA: fs
+              .readFileSync(`${process.cwd()}/${process.env.DB_SSL_KEY}`)
+              .toString(),
           });
           dbConnectionStatus = 'CONN_SSL_TUNNEL';
         },
@@ -101,16 +102,18 @@ export default async function connectDB(): Promise<void> {
       return;
     }
 
-    await  mongoose.connect(mongoURL, {
+    await mongoose.connect(mongoURL, {
       ...auth,
       dbName,
       ssl: true,
-      sslCA: fs.readFileSync(`${process.cwd()}/${process.env.DB_SSL_KEY}`).toString(),
+      sslCA: fs
+        .readFileSync(`${process.cwd()}/${process.env.DB_SSL_KEY}`)
+        .toString(),
     });
     dbConnectionStatus = 'CONN_SSL';
   } catch (e) {
-    logger.debug(e);
-    logger.debug('Failed to initialize MongoDB server connection', false);
+    console.error(e);
+    logger.error('Failed to initialize MongoDB server connection');
     process.exit(1);
   }
 }
@@ -154,7 +157,7 @@ export const connectDBTest = (): Promise<typeof mongoose | undefined> => {
     return mongoose.connect(process.env.TEST_DB_HOST, {
       ...{
         user: process.env.TEST_DB_USER,
-        pass: process.env.TEST_DB_PASS, 
+        pass: process.env.TEST_DB_PASS,
       },
       dbName: process.env.TEST_DB_NAME,
     });

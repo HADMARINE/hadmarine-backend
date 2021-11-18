@@ -16,6 +16,7 @@ import { RateLimiter } from '@util/Middleware';
 import fileUploader from 'express-fileupload';
 import express from 'express';
 import packageJson from '../package.json';
+import logger from 'clear-logger';
 
 const PORT: number = parseInt(
   process.env.NODE_ENV === 'production'
@@ -71,12 +72,17 @@ const SERVER_STARTER_PROPERTIES = {
 };
 
 export function Root(port = PORT): ReturnType<typeof ServerStarter> {
-  wrapConnectDbWithSync();
+  try {
+    wrapConnectDbWithSync();
+  } catch (e) {
+    logger.debug(e);
+  }
 
   const server = ServerStarter({ ...SERVER_STARTER_PROPERTIES, port });
 
   cron();
   io(server.server);
+
   return server;
 }
 
