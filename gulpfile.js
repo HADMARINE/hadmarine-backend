@@ -35,7 +35,7 @@ gulp.task('build_post', (done) => {
   splitResult.push(indexFile.substring(splitResult[0].length));
 
   newIndexFile += splitResult[0];
-  newIndexFile += ";\n\nrequire('../.pnp.js').setup()";
+  newIndexFile += ";\n\nrequire('../.pnp.cjs').setup()";
   newIndexFile += splitResult[1];
 
   fs.writeFileSync(indexFileRoot, newIndexFile);
