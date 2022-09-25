@@ -17,14 +17,16 @@ export default class BlogPostController {
   }
 
   @GetMapping()
-  async getMaster(req: WrappedRequest): Promise<BlogPostInterface[]> {
+  async getMaster(
+    req: WrappedRequest,
+  ): Promise<{ data: BlogPostInterface[]; length: number } | null> {
     const { skip, limit, search } = req.verify.query({
       skip: DataTypes.numberNull(),
       limit: DataTypes.numberNull(),
       search: DataTypes.stringNull(),
     });
 
-    return await BlogPost.find(
+    const posts = await BlogPost.find(
       QueryBuilder({
         title: search,
       }),
@@ -32,5 +34,17 @@ export default class BlogPostController {
       .sort('-date')
       .skip(skip || 0)
       .limit(limit || 10);
+
+    const length = await BlogPost.count(
+      QueryBuilder({
+        title: search,
+      }),
+    );
+
+    if (posts.length === 0) {
+      return null;
+    }
+
+    return { data: posts, length };
   }
 }
