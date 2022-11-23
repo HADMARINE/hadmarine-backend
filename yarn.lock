@@ -6136,7 +6136,7 @@ fsevents@^1.2.7:
     nodemon: 2.0.14
     pm2: ^5.1.2
     portfinder: ^1.0.28
-    prettier: ^2.4.1
+    prettier: ^2.8.0
     quickcert: ^1.1.2
     require-strip-json-comments: ^2.0.0
     socket.io: ^4.3.1
@@ -9544,12 +9544,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
+"prettier@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "prettier@npm:2.8.0"
   bin:
     prettier: bin-prettier.js
-  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
+  checksum: 72004ce0cc9bb097daf3e3833f62495768724392c1d5b178dd47372337616e9e50ecbb0804f236596223f7b5eb1bbe69cefc8957dca21112c5777e77ef73a564
   languageName: node
   linkType: hard
 
